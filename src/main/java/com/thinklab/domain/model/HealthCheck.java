@@ -168,7 +168,6 @@ public class HealthCheck {
         this.expectedStatus = type == CheckType.HTTP ? newExpectedStatus : null;
         this.failureThreshold = failures;
         this.successThreshold = successes;
-        this.updatedAt = Instant.now();
         String detail = "Settings updated.";
         if (retargeted) {
             this.health = Health.UNKNOWN;
@@ -178,10 +177,13 @@ public class HealthCheck {
             this.lastLatencyMillis = null;
             this.lastError = null;
             this.lastStateChangeAt = null;
-            this.nextDueAt = this.updatedAt;
             detail = "Settings updated; the target changed, so the health starts again from UNKNOWN.";
         }
-        return record("UPDATED", executor, this.status.name(), this.status.name(), detail);
+        HealthAuditEntry entry = record("UPDATED", executor, this.status.name(), this.status.name(), detail);
+        if (retargeted) {
+            this.nextDueAt = this.updatedAt;
+        }
+        return entry;
     }
 
     /** Behavior Qualifier: {@code control/pause}. ACTIVE -&gt; PAUSED: the check is no longer probed on its own (a manual run still works). */
