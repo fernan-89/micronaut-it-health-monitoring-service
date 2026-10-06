@@ -71,6 +71,14 @@ class TargetPolicyTest {
     }
 
     @Test
+    @DisplayName("a malformed target is left for the domain to refuse, never a crash of the policy")
+    void malformedTargets() {
+        policy.check(CheckType.TCP, "db.internal");
+        policy.check(CheckType.HTTP, "https:///no-host");
+        policy.check(CheckType.HTTP, "not a url");
+    }
+
+    @Test
     @DisplayName("a malformed literal is refused as a bad address")
     void malformedLiteral() {
         assertThrows(IllegalArgumentException.class, () -> policy.check(CheckType.TCP, "999.999.999.999:22"));

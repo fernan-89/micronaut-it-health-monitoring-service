@@ -2001,7 +2001,7 @@
           "request": {
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"fast\",\n  \"type\": \"TCP\",\n  \"target\": \"10.255.255.1:22\",\n  \"intervalSeconds\": 3600,\n  \"timeoutMillis\": 500,\n  \"intervalSeconds\": 5\n}"
+              "raw": "{\n  \"name\": \"fast\",\n  \"type\": \"TCP\",\n  \"target\": \"h:22\",\n  \"intervalSeconds\": 5\n}"
             },
             "header": [
               {
@@ -2190,7 +2190,7 @@
           "request": {
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Intranet\",\n  \"type\": \"TCP\",\n  \"target\": \"10.255.255.1:22\",\n  \"intervalSeconds\": 3600,\n  \"timeoutMillis\": 500\n}"
+              "raw": "{\n  \"name\": \"Intranet {{$timestamp}}\",\n  \"type\": \"TCP\",\n  \"target\": \"10.255.255.1:22\",\n  \"intervalSeconds\": 3600,\n  \"timeoutMillis\": 500\n}"
             },
             "header": [
               {

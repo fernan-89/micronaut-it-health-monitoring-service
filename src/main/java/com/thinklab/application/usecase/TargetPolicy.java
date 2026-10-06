@@ -54,11 +54,18 @@ public class TargetPolicy {
         return bytes.length == 16 && (bytes[0] & 0xff) == 0xfd && (bytes[1] & 0xff) == 0x00 && (bytes[2] & 0xff) == 0x0e && (bytes[3] & 0xff) == 0xc2;
     }
 
+    /** The host of a target, or an empty string when there is none: a malformed target is for the domain to refuse (400), never a crash here. */
     private static String hostOf(CheckType type, String target) {
         if (type == CheckType.HTTP) {
-            return URI.create(target.trim()).getHost();
+            try {
+                String host = URI.create(target.trim()).getHost();
+                return host == null ? "" : host;
+            } catch (IllegalArgumentException e) {
+                return "";
+            }
         }
-        return target.substring(0, target.lastIndexOf(':'));
+        int colon = target.lastIndexOf(':');
+        return colon < 0 ? target : target.substring(0, colon);
     }
 
     /** An address literal (dotted IPv4, bracketed IPv6, or a plain decimal integer), or {@code null} for a name. No DNS is done here. */
